@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+}
+
+@layer components{
+  .svgCover{
+    @apply w-10 p-2 m-0 hover:bg-slate-200 rounded-full
+  }
+  .svgImg{
+    @apply w-8
+  }
+  .active{
+    @apply bg-secondary
+  }
+  .menuContent{
+    @apply flex flex-row border-none z-50 w-fit p-0 m-0 rounded-t-full rounded-b-full bg-white
+  }
+}
