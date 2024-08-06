@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-board_frontend/node_modules/
-board_backend/node_modules/
+node_modules/
+# board_backend/node_modules/
 board_frontend/.pnp
 .pnp.js
 .yarn/install-state.gz
