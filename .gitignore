@@ -2,6 +2,7 @@
 
 # dependencies
 board_frontend/node_modules
+board_backend/node_modules
 board_frontend/.pnp
 .pnp.js
 .yarn/install-state.gz
