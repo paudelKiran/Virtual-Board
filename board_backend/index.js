@@ -16,11 +16,12 @@ app.get("/", (req, res) => {
 
 io.on("connection", (socket) => {
   // console.log("Ommm chin tabak dam dam");
-
+  let imageGlobal, roomIdGlobal;
   //? data requested from create room
   socket.on("createRoomData", (data) => {
     const { roomId, userId, userName, host, meetingTitle, presenter } = data;
     socket.join(roomId);
+    roomIdGlobal = roomId;
     socket.emit("roomCreated", { success: true });
     console.log("create triggered");
   });
@@ -30,7 +31,18 @@ io.on("connection", (socket) => {
     const { roomId, userId, userName, host, presenter } = data;
     socket.join(roomId);
     socket.emit("roomJoined", { success: true });
+    socket.broadcast.to(roomId).emit("boardResponse", {
+      imageUrl: imageGlobal,
+    });
     console.log("join triggered");
+  });
+
+  //? data sent from whiteboard
+  socket.on("boardData", (data) => {
+    imageGlobal = data;
+    socket.broadcast.to(roomIdGlobal).emit("boardResponse", {
+      imageUrl: imageGlobal,
+    });
   });
 });
 

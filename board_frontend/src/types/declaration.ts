@@ -8,3 +8,12 @@ export type dataToCanvas={
     element: any;
     setElement:Function
 }
+
+export type UserType = {
+  roomId: string;
+  userId: string;
+  userName: string;
+  host: boolean;
+  meetingTitle?: string;
+  presenter: boolean;
+};

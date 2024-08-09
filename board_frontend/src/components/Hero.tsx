@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { useBoardContext } from "@/context/myContext";
+import { UserType } from "@/types/declaration";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -11,19 +13,8 @@ const FormSchema = z.object({
   }),
 });
 
-export function Hero({
-  uuidv4,
-  setIsJoined,
-  setUser,
-  socket,
-  isJoined,
-}: {
-  uuidv4: any;
-  setIsJoined: Function;
-  setUser: Function;
-  socket: any;
-  isJoined: boolean;
-}) {
+export function Hero() {
+  const { socket, user, setUser, uuidv4 } = useBoardContext();
   //starting with some constants
   const router = useRouter();
   const [roomId, setRoomId] = useState(uuidv4());
@@ -45,15 +36,16 @@ export function Hero({
     ) as HTMLInputElement;
     let usernameVal = username.value;
     let meetingTitleVal = meetingTitle.value;
-    let userDet = {
-      roomId,
+    let userDet: UserType = {
+      roomId: roomId,
       userId: uuidv4(),
       userName: usernameVal,
       host: true,
       meetingTitle: meetingTitleVal,
       presenter: true,
     };
-    setUser(userDet);
+    setUser([userDet]);
+    console.log([userDet]);
     username.value = "";
     meetingTitle.value = "";
     socket.emit("createRoomData", userDet);
@@ -79,6 +71,7 @@ export function Hero({
       host: false,
       presenter: false,
     };
+    setUser([userDet]);
     console.log(meetingIdVal);
     socket.emit("joinRoomData", userDet);
     router.push(`/meeting/${meetingIdVal}`);

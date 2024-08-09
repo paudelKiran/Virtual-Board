@@ -149,7 +149,6 @@ const Canvas = ({
         );
       }
       element.forEach((elem: any) => {
-        console.log(elem);
         //for pencil
         if (elem.tool === "pencil") {
           roughCanvas.linearPath(elem?.path);

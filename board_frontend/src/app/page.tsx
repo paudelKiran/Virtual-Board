@@ -1,22 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-
-import { v4 as uuidv4 } from "uuid";
 import Hero from "@/components/Hero";
 import NavBar from "@/components/NavBar";
-import { socket } from "../lib/socket";
+import { useBoardContext } from "@/context/myContext";
 
 export default function Home() {
-  //setting up for socket io connection
-  const [isJoined, setIsJoined] = useState(false);
-  const [user, setUser] = useState({
-    roomId: null,
-    userId: null,
-    userName: null,
-    host: undefined,
-    meetingTitle: null,
-    presenter: undefined,
-  });
+  const { socket, setIsJoined, isJoined, setUser, uuidv4 } = useBoardContext();
 
   useEffect(() => {
     //room created response
@@ -44,13 +33,7 @@ export default function Home() {
     <>
       <NavBar noUsers={3} />
       <div>
-        <Hero
-          isJoined={isJoined}
-          uuidv4={uuidv4}
-          setIsJoined={setIsJoined}
-          setUser={setUser}
-          socket={socket}
-        />
+        <Hero />
       </div>
     </>
   );
