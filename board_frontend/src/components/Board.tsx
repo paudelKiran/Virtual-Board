@@ -6,7 +6,7 @@ import { MenuBar } from "./MenuBar";
 import { UserType } from "@/types/declaration";
 import { useBoardContext } from "@/context/myContext";
 
-const Board = ({ meetingId }: { meetingId: String }) => {
+const Board = () => {
   const { socket, user } = useBoardContext();
   let canvasRef = useRef<HTMLCanvasElement>(null);
   let ctx = useRef(null);
@@ -23,8 +23,6 @@ const Board = ({ meetingId }: { meetingId: String }) => {
       if (imgRef.current) {
         if (data.imageUrl) {
           imgRef.current.src = data.imageUrl;
-        } else {
-          // imgRef.current.placeholder
         }
       }
     });

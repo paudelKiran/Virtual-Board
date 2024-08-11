@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -8,13 +9,16 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import { Separator } from "./ui/separator";
+import CopyButton from "./CopyButton";
 
 const NavBar = ({
   noUsers,
   isActive,
+  meetingId,
 }: {
   noUsers: number;
   isActive?: boolean;
+  meetingId?: string;
 }) => {
   return (
     <>
@@ -36,7 +40,7 @@ const NavBar = ({
             isActive ? "" : "hidden"
           } my-1 justify-between px-5`}
         >
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 items-center">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -75,9 +79,17 @@ const NavBar = ({
               Clear board
             </Button>
           </div>
-          <div className="flex justify-self-end ">
-            <h1>Connected Users :&nbsp;</h1>
-            <h1>{noUsers}</h1>
+          <div className="flex items-center">
+            <div className="flex justify-self-end justify-center items-center space-x-1">
+              <h1>Meeting ID :&nbsp;</h1>
+              <h1>{meetingId}</h1>
+              {meetingId && <CopyButton text={meetingId} />}
+            </div>
+            <Separator className=" mx-4" orientation="vertical" />
+            <div className="flex">
+              <h1>Connected Users :&nbsp;</h1>
+              <h1>{noUsers}</h1>
+            </div>
           </div>
         </div>
       </div>

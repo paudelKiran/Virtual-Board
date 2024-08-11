@@ -5,8 +5,8 @@ import React from "react";
 const page = ({ params }: any) => {
   return (
     <>
-      <NavBar noUsers={3} isActive={true} />
-      <Board meetingId={params.meetingId} />
+      <NavBar noUsers={3} isActive={true} meetingId={params.meetingId} />
+      <Board />
     </>
   );
 };

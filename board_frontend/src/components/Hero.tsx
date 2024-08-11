@@ -6,6 +6,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useBoardContext } from "@/context/myContext";
 import { UserType } from "@/types/declaration";
+import { toast } from "react-toastify";
+import CopyButton from "./CopyButton";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -51,6 +53,7 @@ export function Hero() {
     socket.emit("createRoomData", userDet);
 
     router.push(`/meeting/${roomId}`);
+    toast.success("meeting");
   };
 
   const handleJoinRoom = (e: any) => {
@@ -116,13 +119,16 @@ export function Hero() {
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Meeting ID
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="meetingId"
-              type="text"
-              readOnly={true}
-              value={roomId}
-            />
+            <div className="flex space-x-1">
+              <input
+                className="shadow appearance-none border rounded w-[90%] py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                id="meetingId"
+                type="text"
+                readOnly={true}
+                value={roomId}
+              />
+              <CopyButton text={roomId} />
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <button

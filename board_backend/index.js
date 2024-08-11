@@ -1,6 +1,7 @@
 const express = require("express");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
+const { userJoin, userLeave, getUsersInRoom } = require("./utils/user");
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
@@ -18,16 +19,25 @@ io.on("connection", (socket) => {
   // console.log("Ommm chin tabak dam dam");
   let imageGlobal, roomIdGlobal;
   //? data requested from create room
-  socket.on("createRoomData", (data) => {
-    const { roomId, userId, userName, host, meetingTitle, presenter } = data;
-    socket.join(roomId);
+  socket.on("createRoomData", async (data) => {
+    // const sockets = await io.fetchSockets();
+    console.log(socket.rooms, " create");
+    const { roomId, userName } = data;
     roomIdGlobal = roomId;
-    socket.emit("roomCreated", { success: true });
+    const user = userJoin(data);
+    socket.join(roomId);
+    if (user) {
+      socket.broadcast.to(roomId).emit("roomCreated", {
+        success: true,
+        message: `${userName} has joined`,
+      });
+    }
     console.log("create triggered");
   });
 
   //? data requested from join room
   socket.on("joinRoomData", (data) => {
+    console.log(socket.rooms, " join");
     const { roomId, userId, userName, host, presenter } = data;
     socket.join(roomId);
     socket.emit("roomJoined", { success: true });

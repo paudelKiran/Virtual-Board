@@ -15,7 +15,7 @@ export function MenuBar({
   tool,
   setTool,
 }: {
-  tool: string;
+  tool: String;
   setTool: Function;
 }) {
   const [active, setActive] = useState("pencil");
@@ -52,14 +52,6 @@ export function MenuBar({
           <MenubarItem>
             <SvgImage fileName="rectangle" click={handleSvgClick} />
           </MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger>Tool</MenubarTrigger>
-        <MenubarContent side="right" className="menuContent">
-          <MenubarItem>Pencil</MenubarItem>
-          <Separator orientation="vertical" />
-          <MenubarItem>Line</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>

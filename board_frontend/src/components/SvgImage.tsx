@@ -22,7 +22,7 @@ const SvgImage = ({
           <img
             src={`/icons/${fileName}.svg`}
             alt={fileName}
-            className="svgImg"
+            className="svgImg scale-90"
           />
         </div>
       ) : (
@@ -30,7 +30,7 @@ const SvgImage = ({
           <img
             src={`/icons/${fileName}.svg`}
             alt={fileName}
-            className="svgImg"
+            className="svgImg scale-90"
           />
         </div>
       )}
