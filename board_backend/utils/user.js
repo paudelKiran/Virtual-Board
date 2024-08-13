@@ -1,9 +1,27 @@
 const users = [];
+const rooms = [];
+
+const createRoom = (roomId) => {
+  rooms.push(roomId);
+};
+
+const roomDisclose = (roomId) => {
+  const index = rooms.findIndex((room) => room === roomId);
+  if (index !== -1) {
+    return rooms.splice(index, 1)[0];
+  }
+};
+
+const findRoom = (roomId) => {
+  let value = rooms.find((room) => room === roomId);
+  return value;
+};
 
 const userJoin = (userArr) => {
   //   const user = { roomId, userId, userName, host, meetingTitle, presenter };
   users.push(userArr);
-  return userArr;
+  const roomUsers = getUsersInRoom(userArr.roomId);
+  return roomUsers;
 };
 
 const userLeave = (userId) => {
@@ -26,6 +44,9 @@ const getUsersInRoom = (roomId) => {
 };
 
 module.exports = {
+  findRoom,
+  createRoom,
+  roomDisclose,
   userJoin,
   userLeave,
   getUsersInRoom,

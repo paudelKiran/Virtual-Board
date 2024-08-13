@@ -4,10 +4,12 @@ const SvgImage = ({
   fileName,
   click,
   extraClass,
+  text,
 }: {
   fileName: string;
   click?: any;
   extraClass?: string;
+  text?: String;
 }) => {
   return (
     <>
@@ -26,12 +28,16 @@ const SvgImage = ({
           />
         </div>
       ) : (
-        <div className={`flex svgCover ${extraClass}`} id={fileName}>
+        <div
+          className={`flex justify-center svgCover ${extraClass}`}
+          id={fileName}
+        >
           <img
             src={`/icons/${fileName}.svg`}
             alt={fileName}
-            className="svgImg scale-90"
+            className="svgImg"
           />
+          <p className="flex text-sm">{text}</p>
         </div>
       )}
     </>

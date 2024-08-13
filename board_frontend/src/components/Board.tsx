@@ -17,9 +17,8 @@ const Board = () => {
   const [element, setElement] = useState([]); //this for storing the path of drawn line through mouse
 
   useEffect(() => {
-    console.log(user[0].presenter);
     socket.on("boardResponse", (data: any) => {
-      console.log(data);
+      // console.log(data);
       if (imgRef.current) {
         if (data.imageUrl) {
           imgRef.current.src = data.imageUrl;

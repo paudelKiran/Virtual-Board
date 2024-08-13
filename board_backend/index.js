@@ -1,7 +1,14 @@
 const express = require("express");
 const { Server } = require("socket.io");
 const { createServer } = require("http");
-const { userJoin, userLeave, getUsersInRoom } = require("./utils/user");
+const {
+  findRoom,
+  createRoom,
+  roomDisclose,
+  userJoin,
+  userLeave,
+  getUsersInRoom,
+} = require("./utils/user");
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
@@ -18,33 +25,43 @@ app.get("/", (req, res) => {
 io.on("connection", (socket) => {
   // console.log("Ommm chin tabak dam dam");
   let imageGlobal, roomIdGlobal;
+
   //? data requested from create room
-  socket.on("createRoomData", async (data) => {
-    // const sockets = await io.fetchSockets();
-    console.log(socket.rooms, " create");
+  socket.on("createRoomData", (data, callback) => {
     const { roomId, userName } = data;
     roomIdGlobal = roomId;
-    const user = userJoin(data);
+    const roomUsers = userJoin(data);
+    createRoom(roomId);
     socket.join(roomId);
-    if (user) {
-      socket.broadcast.to(roomId).emit("roomCreated", {
-        success: true,
-        message: `${userName} has joined`,
-      });
+
+    if (roomUsers) {
+      callback({ success: true, message: `Meeting has been created.` });
+      io.to(roomId).emit("allUsers", roomUsers);
+    } else {
+      callback({ success: false, message: `Error creating a meeting.` });
     }
-    console.log("create triggered");
   });
 
   //? data requested from join room
-  socket.on("joinRoomData", (data) => {
-    console.log(socket.rooms, " join");
-    const { roomId, userId, userName, host, presenter } = data;
-    socket.join(roomId);
-    socket.emit("roomJoined", { success: true });
-    socket.broadcast.to(roomId).emit("boardResponse", {
-      imageUrl: imageGlobal,
-    });
-    console.log("join triggered");
+  socket.on("joinRoomData", (data, callback) => {
+    const { roomId } = data;
+    const doRoomExist = findRoom(roomId);
+    //doRoomExist gets room id if exits else undefined
+    if (doRoomExist) {
+      const roomUsers = userJoin(data);
+      socket.join(roomId);
+
+      io.to(roomId).emit("allUsers", roomUsers);
+      callback({
+        success: true,
+        message: "Successfully joined to the room.",
+      });
+    } else {
+      callback({
+        success: false,
+        message: "No room with such ID is currently created.",
+      });
+    }
   });
 
   //? data sent from whiteboard

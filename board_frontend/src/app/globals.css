@@ -20,10 +20,10 @@ body{
 
 @layer components{
   .svgCover{
-    @apply w-10 p-2 m-0 hover:bg-slate-200 rounded-full
+    @apply flex m-0 p-0.5 h-9 w-9 hover:bg-slate-200 rounded-xl items-center justify-center
   }
   .svgImg{
-    @apply w-8
+    @apply w-8 scale-125
   }
   .active{
     @apply bg-secondary

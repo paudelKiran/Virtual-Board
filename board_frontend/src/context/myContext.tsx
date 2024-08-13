@@ -18,8 +18,12 @@ type MyContextType = {
   isJoined: boolean;
   uuidv4: () => string;
   socket: any;
+  roomUsers: any;
+  noUsers: number;
+  setNoUsers: Dispatch<SetStateAction<number>>;
   setIsJoined: Dispatch<SetStateAction<boolean>>;
   setUser: Dispatch<React.SetStateAction<UserType[]>>;
+  setRoomUsers: Dispatch<React.SetStateAction<UserType[]>>;
 };
 
 // Provide a non-null initial value
@@ -28,6 +32,10 @@ const BoardContext = createContext<MyContextType>({
   isJoined: false,
   uuidv4,
   socket,
+  roomUsers: [],
+  noUsers: 0,
+  setNoUsers: () => {},
+  setRoomUsers: () => {},
   setIsJoined: () => {},
   setUser: () => {},
 });
@@ -35,10 +43,23 @@ const BoardContext = createContext<MyContextType>({
 export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [isJoined, setIsJoined] = useState(false);
   const [user, setUser] = useState<UserType[]>([]);
+  const [roomUsers, setRoomUsers] = useState<any>([]);
+  const [noUsers, setNoUsers] = useState(0);
 
   return (
     <BoardContext.Provider
-      value={{ user, isJoined, uuidv4, socket, setIsJoined, setUser }}
+      value={{
+        user,
+        isJoined,
+        uuidv4,
+        socket,
+        setIsJoined,
+        setUser,
+        roomUsers,
+        setRoomUsers,
+        noUsers,
+        setNoUsers,
+      }}
     >
       {children}
     </BoardContext.Provider>

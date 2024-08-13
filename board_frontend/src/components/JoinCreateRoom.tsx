@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useBoardContext } from "@/context/myContext";
@@ -10,22 +8,16 @@ import { toast } from "react-toastify";
 import CopyButton from "./CopyButton";
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  username: z.string().min(3, {
+    message: "Username must be at least 3 characters.",
   }),
 });
 
-export function Hero() {
+export function JoinCreateRoom() {
   const { socket, user, setUser, uuidv4 } = useBoardContext();
   //starting with some constants
   const router = useRouter();
   const [roomId, setRoomId] = useState(uuidv4());
-  // const form = useForm<z.infer<typeof FormSchema>>({
-  //   resolver: zodResolver(FormSchema),
-  //   defaultValues: {
-  //     username: "",
-  //   },
-  // });
 
   const handleCreateRoom = (e: any) => {
     //usernameCreate,meetingTitle
@@ -37,23 +29,25 @@ export function Hero() {
       "meetingTitle"
     ) as HTMLInputElement;
     let usernameVal = username.value;
-    let meetingTitleVal = meetingTitle.value;
+    // let meetingTitleVal = meetingTitle.value;
     let userDet: UserType = {
       roomId: roomId,
       userId: uuidv4(),
       userName: usernameVal,
       host: true,
-      meetingTitle: meetingTitleVal,
       presenter: true,
     };
     setUser([userDet]);
-    console.log([userDet]);
     username.value = "";
     meetingTitle.value = "";
-    socket.emit("createRoomData", userDet);
-
-    router.push(`/meeting/${roomId}`);
-    toast.success("meeting");
+    socket.emit("createRoomData", userDet, function (response: any) {
+      if (response.success) {
+        router.push(`/meeting/${roomId}`);
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   const handleJoinRoom = (e: any) => {
@@ -75,9 +69,14 @@ export function Hero() {
       presenter: false,
     };
     setUser([userDet]);
-    console.log(meetingIdVal);
-    socket.emit("joinRoomData", userDet);
-    router.push(`/meeting/${meetingIdVal}`);
+    socket.emit("joinRoomData", userDet, function (response: any) {
+      if (response.success) {
+        router.push(`/meeting/${roomId}`);
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   return (
@@ -187,4 +186,4 @@ export function Hero() {
   );
 }
 
-export default Hero;
+export default JoinCreateRoom;
