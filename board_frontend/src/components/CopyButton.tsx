@@ -11,7 +11,7 @@ const CopyButton = ({ text }: { text: string }) => {
       }}
     >
       <button
-        className="flex m-0 p-0.5 h-9 w-9 hover:bg-slate-200 rounded-xl items-center justify-center"
+        className="flex m-0 p-0.5 h-9 w-9 hover:bg-hoverCol rounded-xl items-center justify-center"
         type="button"
       >
         <img src="/icons/copy.svg" className=" h-6 w-6 scale-95" />

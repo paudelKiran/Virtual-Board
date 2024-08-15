@@ -18,14 +18,13 @@ const findRoom = (roomId) => {
 };
 
 const userJoin = (userArr) => {
-  //   const user = { roomId, userId, userName, host, meetingTitle, presenter };
   users.push(userArr);
   const roomUsers = getUsersInRoom(userArr.roomId);
   return roomUsers;
 };
 
-const userLeave = (userId) => {
-  const index = users.findIndex((user) => user.id === userId);
+const userLeave = (socketId) => {
+  const index = users.findIndex((user) => user.socketId === socketId);
   //user bhettiyena bhane -1 return hanxa index
   if (index !== -1) {
     //removed array return aauxa jasma yeuta matra element hunxa so returning it

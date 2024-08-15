@@ -5,6 +5,7 @@ import React, {
   useState,
   Dispatch,
   SetStateAction,
+  useRef,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { socket } from "../lib/socket";
@@ -24,6 +25,14 @@ type MyContextType = {
   setIsJoined: Dispatch<SetStateAction<boolean>>;
   setUser: Dispatch<React.SetStateAction<UserType[]>>;
   setRoomUsers: Dispatch<React.SetStateAction<UserType[]>>;
+  canvasRef: any;
+  ctx: any;
+  tool: string;
+  color: string;
+  element: Array<any>;
+  setTool: Dispatch<SetStateAction<string>>;
+  setColor: Dispatch<SetStateAction<string>>;
+  setElement: Dispatch<SetStateAction<Array<any>>>;
 };
 
 // Provide a non-null initial value
@@ -38,6 +47,14 @@ const BoardContext = createContext<MyContextType>({
   setRoomUsers: () => {},
   setIsJoined: () => {},
   setUser: () => {},
+  canvasRef: null,
+  ctx: null,
+  tool: "pencil",
+  color: "black",
+  element: [],
+  setTool: () => {},
+  setColor: () => {},
+  setElement: () => {},
 });
 
 export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
@@ -45,6 +62,12 @@ export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserType[]>([]);
   const [roomUsers, setRoomUsers] = useState<any>([]);
   const [noUsers, setNoUsers] = useState(0);
+  //canvas related
+  let canvasRef = useRef<HTMLCanvasElement>(null);
+  let ctx = useRef(null);
+  const [tool, setTool] = useState("pencil");
+  const [color, setColor] = useState("black");
+  const [element, setElement] = useState<any>([]);
 
   return (
     <BoardContext.Provider
@@ -59,6 +82,14 @@ export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
         setRoomUsers,
         noUsers,
         setNoUsers,
+        canvasRef,
+        ctx,
+        tool,
+        setTool,
+        color,
+        setColor,
+        element,
+        setElement,
       }}
     >
       {children}

@@ -13,6 +13,7 @@ import CopyButton from "./CopyButton";
 import { useBoardContext } from "@/context/myContext";
 import DrawerComp from "./DrawerComp";
 import { UserType } from "@/types/declaration";
+import { toast } from "react-toastify";
 
 const NavBar = ({
   isActive,
@@ -21,8 +22,16 @@ const NavBar = ({
   isActive?: boolean;
   meetingId?: string;
 }) => {
-  const { socket, user, roomUsers, setRoomUsers, noUsers, setNoUsers } =
-    useBoardContext();
+  const {
+    socket,
+    ctx,
+    canvasRef,
+    roomUsers,
+    setRoomUsers,
+    noUsers,
+    setNoUsers,
+    setElement,
+  } = useBoardContext();
 
   useEffect(() => {
     socket.on("allUsers", (data: any) => {
@@ -31,13 +40,25 @@ const NavBar = ({
     });
   }, []);
 
-  useEffect(() => {
-    setNoUsers(roomUsers.length);
-    console.log("Users updated:", roomUsers, noUsers);
-  }, [roomUsers]);
+  let count = 1;
+  socket.on("userLeft", (data: any) => {
+    console.log(count);
+    count++;
+    toast.info(data.message);
+  });
+
+  const handleClearBoard = () => {
+    ctx.current?.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+    setElement([]);
+  };
 
   return (
-    <div className="flex w-screen flex-col bg-yellow-50 h-fit py-2 px-5">
+    <div className="flex w-screen flex-col bg-col4 text-col3 h-fit py-2 px-5">
       <div className="flex flex-row px-5 justify-between items-center">
         <h1 className=" text-2xl font-extrabold font-serif">GoBoard</h1>
         <div className="flex">
@@ -57,7 +78,7 @@ const NavBar = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="hover:bg-secondary hover:cursor-pointer flex py-0.5 h-fit p-1 rounded-[2px] justify-center items-center">
+                <div className="hover:bg-hoverCol hover:cursor-pointer flex py-0.5 h-fit p-1 rounded-[2px] justify-center items-center">
                   <img
                     src="/icons/undo.svg"
                     alt="Undo"
@@ -73,7 +94,7 @@ const NavBar = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="hover:bg-secondary hover:cursor-pointer flex py-0.5 h-fit p-1 rounded-[2px] justify-center items-center">
+                <div className="hover:bg-hoverCol hover:cursor-pointer flex py-0.5 h-fit p-1 rounded-[2px] justify-center items-center">
                   <img
                     src="/icons/redo.svg"
                     alt="Redo"
@@ -87,7 +108,10 @@ const NavBar = ({
             </Tooltip>
           </TooltipProvider>
           <Separator className=" mx-4" orientation="vertical" />
-          <Button className="py-1 px-2 border-2 h-fit hover:bg-secondary rounded-[3.5px]">
+          <Button
+            className="py-1 px-2 h-fit hover:bg-hoverCol border-none rounded-[3.5px]"
+            onClick={handleClearBoard}
+          >
             Clear board
           </Button>
         </div>

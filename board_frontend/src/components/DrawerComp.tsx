@@ -26,7 +26,7 @@ const DrawerComp = () => {
             text={String(noUsers)}
           />
         </DrawerTrigger>
-        <DrawerContent className="bg-secondary text-black right-0 top-0 w-[50vw] md:w-[30vw] h-screen mt-0">
+        <DrawerContent className="bg-col4 text-col3 right-0 top-0 w-[50vw] md:w-[30vw] h-screen mt-0">
           <DrawerHeader>
             <DrawerTitle className="mt-0 p-0 text-center">
               Participants
@@ -37,16 +37,18 @@ const DrawerComp = () => {
             {roomUsers?.map((roomUser: any) => (
               <p
                 key={roomUser.userName}
-                className="bg-green-200 px-2 pl-4 text-lg rounded-[4px] hover:bg-yellow-50"
+                className="bg-col4 hover:bg-hoverCol text-secondary px-2 pl-4 text-lg rounded-[4px] font-medium"
               >
                 {roomUser.userName}
-                {`${roomUser.userId === user[0].userId ? " (You) " : ""}`}
-                {`${roomUser.host === true ? " (Host) " : ""}`}
+                <span className="text-col5">
+                  {`${roomUser.userId === user[0].userId ? " (You) " : ""}`}
+                  {`${roomUser.host === true ? " (Host) " : ""}`}
+                </span>
               </p>
             ))}
           </DrawerDescription>
           <DrawerFooter className="justify-center">
-            <DrawerClose className="w-fit py-1 px-4 border-2 h-fit hover:bg-yellow-50 rounded-[3.5px]">
+            <DrawerClose className="w-fit bg-secondary hover:bg-col5 text-white font-bold py-[0.5px] px-4 rounded focus:outline-none focus:shadow-outline h-8">
               Back
             </DrawerClose>
           </DrawerFooter>

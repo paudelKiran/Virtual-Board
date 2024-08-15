@@ -28,10 +28,13 @@ export function MenuBar({
   return (
     <Menubar className="border-none rounded-[2px] p-0 h-fit">
       <MenubarMenu>
-        <MenubarTrigger onClick={handleSelectTool}>
+        <MenubarTrigger
+          onClick={handleSelectTool}
+          className={`${active ? "active" : ""} p-0.5 m-3 rounded-xl `}
+        >
           <SvgImage
             fileName={`${active ? active : "line"}`}
-            extraClass={`${active ? "active" : ""}`}
+            extraClass={` scale-75 hover:bg-transparent`}
           />
         </MenubarTrigger>
         <MenubarContent side="right" className="menuContent">

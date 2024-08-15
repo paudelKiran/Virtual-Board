@@ -2,7 +2,6 @@
 import { dataToCanvas } from "@/types/declaration";
 import path from "path";
 import React from "react";
-
 import { useEffect, useRef, useState, useLayoutEffect } from "react";
 import rough from "roughjs";
 
@@ -28,8 +27,8 @@ const Canvas = ({
     canvas.height = (window.innerHeight * 3) / 4; //75vh
     canvas.width = (window.innerWidth * 4) / 5; //80vw
     const context = canvas?.getContext("2d");
-    // context?.clearRect();
     ctx.current = context;
+
     ctx.lineWidth = 2;
     ctx.lineCap = "round";
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -183,7 +182,7 @@ const Canvas = ({
     <>
       {/* {JSON.stringify(element[element.length - 1].path)} */}
       <div
-        className="h-[77vh] w-[82vw] border-black border-4 rounded-md m-2 mb-10"
+        className="flex justify-center h-[77vh] w-[82vw] border-primary border-4 rounded-md m-2 mb-10"
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}

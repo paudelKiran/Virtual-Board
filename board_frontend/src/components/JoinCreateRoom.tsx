@@ -80,20 +80,20 @@ export function JoinCreateRoom() {
   };
 
   return (
-    <div className="w-full h-[70vh] flex flex-row justify-evenly mt-5">
+    <div className="w-full h-[70vh] flex flex-row justify-evenly mt-5 text-col3 font-normal">
       {/* create room form */}
       <div className=" w-2/5 h-full justify-center flex items-center">
         <form
-          className="bg-yellow-50 shadow-md rounded px-8 pt-6 pb-8 h-full w-full"
+          className="bg-col4 shadow-md rounded px-8 pt-6 pb-8 h-full w-full"
           onSubmit={(e) => handleCreateRoom(e)}
         >
           <h1 className="text-5xl font-bold mb-5">Create Room</h1>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-col3 text-sm font-bold mb-2">
               Join as
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="inputButton focus:outline-none focus:shadow-outline"
               id="usernameCreate"
               type="text"
               placeholder="Your name"
@@ -102,11 +102,11 @@ export function JoinCreateRoom() {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
+            <label className="block text-sm font-bold mb-2">
               Meeting Title
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="inputButton focus:outline-none focus:shadow-outline"
               id="meetingTitle"
               type="text"
               placeholder="Minimum 3 characters"
@@ -115,12 +115,10 @@ export function JoinCreateRoom() {
             />
           </div>
           <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Meeting ID
-            </label>
+            <label className="block text-sm font-bold mb-2">Meeting ID</label>
             <div className="flex space-x-1">
               <input
-                className="shadow appearance-none border rounded w-[90%] py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                className="inputButton font-medium focus:outline-none focus:shadow-outline"
                 id="meetingId"
                 type="text"
                 readOnly={true}
@@ -131,7 +129,7 @@ export function JoinCreateRoom() {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-[0.5px] px-4 rounded focus:outline-none focus:shadow-outline h-8"
+              className="bg-secondary hover:bg-col5 text-white font-bold py-[0.5px] px-4 rounded focus:outline-none focus:shadow-outline h-8"
               type="submit"
             >
               Create room
@@ -141,9 +139,9 @@ export function JoinCreateRoom() {
       </div>
 
       {/* join room form  */}
-      <div className=" w-2/5 h-full justify-center flex items-center">
+      <div className=" w-2/5 h-full justify-center flex items-center text-col3">
         <form
-          className="bg-yellow-50 shadow-inner rounded px-8 pt-6 pb-8 h-full w-full"
+          className="bg-col4 shadow-inner rounded px-8 pt-6 pb-8 h-full w-full"
           onSubmit={handleJoinRoom}
         >
           <h1 className="text-5xl font-bold mb-5">Join Room</h1>
@@ -153,7 +151,7 @@ export function JoinCreateRoom() {
             </label>
             <input
               required
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="inputButton focus:outline-none focus:shadow-outline"
               id="usernameJoin"
               type="text"
               placeholder="Your name"
@@ -165,7 +163,7 @@ export function JoinCreateRoom() {
               Meeting ID
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="inputButton focus:outline-none focus:shadow-outline"
               id="meetingIdJoin"
               type="text"
               placeholder=".."
@@ -174,7 +172,7 @@ export function JoinCreateRoom() {
           </div>
           <div className="flex items-center justify-between">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-[0.5px] px-4 rounded focus:outline-none focus:shadow-outline h-8"
+              className="bg-secondary hover:bg-col5 text-white font-bold py-[0.5px] px-4 rounded focus:outline-none focus:shadow-outline h-8"
               type="submit"
             >
               Join room

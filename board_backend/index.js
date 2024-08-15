@@ -30,6 +30,7 @@ io.on("connection", (socket) => {
   socket.on("createRoomData", (data, callback) => {
     const { roomId, userName } = data;
     roomIdGlobal = roomId;
+    data.socketId = socket.id;
     const roomUsers = userJoin(data);
     createRoom(roomId);
     socket.join(roomId);
@@ -45,6 +46,7 @@ io.on("connection", (socket) => {
   //? data requested from join room
   socket.on("joinRoomData", (data, callback) => {
     const { roomId } = data;
+    data.socketId = socket.id;
     const doRoomExist = findRoom(roomId);
     //doRoomExist gets room id if exits else undefined
     if (doRoomExist) {
@@ -70,6 +72,21 @@ io.on("connection", (socket) => {
     socket.broadcast.to(roomIdGlobal).emit("boardResponse", {
       imageUrl: imageGlobal,
     });
+  });
+
+  //for disconnection
+  socket.on("disconnect", () => {
+    const userLeft = userLeave(socket.id);
+    console.log(userLeft);
+
+    if (userLeft) {
+      console.log(userLeft);
+      const usersInRoom = getUsersInRoom(userLeft.roomId);
+      socket.broadcast.to(userLeft.roomId).emit("userLeft", {
+        message: `${userLeft.userName} left the room.`,
+      });
+      socket.broadcast.to(userLeft.roomId).emit("allUsers", usersInRoom);
+    }
   });
 });
 

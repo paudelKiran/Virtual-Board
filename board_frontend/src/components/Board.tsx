@@ -7,14 +7,18 @@ import { UserType } from "@/types/declaration";
 import { useBoardContext } from "@/context/myContext";
 
 const Board = () => {
-  const { socket, user } = useBoardContext();
-  let canvasRef = useRef<HTMLCanvasElement>(null);
-  let ctx = useRef(null);
+  const {
+    socket,
+    user,
+    canvasRef,
+    ctx,
+    color,
+    tool,
+    setTool,
+    element,
+    setElement,
+  } = useBoardContext();
   let imgRef = useRef<HTMLImageElement>(null);
-
-  const [tool, setTool] = useState("pencil");
-  const [color, setColor] = useState("black");
-  const [element, setElement] = useState([]); //this for storing the path of drawn line through mouse
 
   useEffect(() => {
     socket.on("boardResponse", (data: any) => {
@@ -33,11 +37,11 @@ const Board = () => {
 
   return (
     <>
-      <section className="h-full w-screen overflow-hidden flex justify-center bg-secondary">
-        <div className="flex fixed left-5 bottom-[50%] h-fit bg-white rounded-t-3xl rounded-b-3xl px-0 py-2">
+      <section className="h-full w-screen overflow-hidden flex justify-center ">
+        <div className="flex fixed left-5 bottom-[50%] h-fit bg-col4 rounded-t-3xl rounded-b-3xl px-0 py-2">
           <MenuBar tool={tool} setTool={setTool} />
         </div>
-        <div className="h-[75vh] w-[80vw]">
+        <div className="h-[77vh] w-[82vw]">
           {user[0].presenter ? (
             <Canvas
               canvasRef={canvasRef}
@@ -48,7 +52,7 @@ const Board = () => {
               element={element}
             />
           ) : (
-            <div className="h-[77vh] w-[82vw] border-black border-4 rounded-md m-2 mb-10 overflow-hidden">
+            <div className="h-[77vh] w-[82vw] border-primary border-4 rounded-md m-2 mb-10 overflow-hidden">
               <img
                 className="w-75vw h-80vh overflow-hidden"
                 ref={imgRef}
