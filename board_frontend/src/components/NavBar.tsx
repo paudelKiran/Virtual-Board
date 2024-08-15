@@ -40,12 +40,25 @@ const NavBar = ({
     });
   }, []);
 
-  let count = 1;
-  socket.on("userLeft", (data: any) => {
-    console.log(count);
-    count++;
-    toast.info(data.message);
-  });
+  useEffect(() => {
+    const handleUserLeft = (data: any) => {
+      toast.info(data.message);
+    };
+    socket.on("userLeft", handleUserLeft);
+    return () => {
+      socket.off("userLeft", handleUserLeft);
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const handleUserJoined = (data: any) => {
+      toast.info(data.message);
+    };
+    socket.on("userJoined", handleUserJoined);
+    return () => {
+      socket.off("userJoined", handleUserJoined);
+    };
+  }, [socket]);
 
   const handleClearBoard = () => {
     ctx.current?.clearRect(

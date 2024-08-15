@@ -6,7 +6,8 @@ export type dataToCanvas={
     color:string;
     tool:string;
     element: any;
-    setElement:Function
+    setElement:Function;
+    strokeWidth:number
 }
 
 export type UserType = {

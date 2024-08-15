@@ -12,6 +12,7 @@ const Canvas = ({
   tool,
   element,
   setElement,
+  strokeWidth,
 }: dataToCanvas) => {
   const generator = rough.generator();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -36,7 +37,7 @@ const Canvas = ({
     ctx.current = context;
     ctx.lineCap = "round";
     ctx.strokeStyle = color;
-    ctx.lineWidth = 5;
+    ctx.lineWidth = 2;
 
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, []);
@@ -44,6 +45,10 @@ const Canvas = ({
   useEffect(() => {
     ctx.current.strokeStyle = color;
   }, [color]);
+
+  useEffect(() => {
+    ctx.current.lineWidth = strokeWidth;
+  }, [strokeWidth]);
 
   const handleMouseDown = (e: any) => {
     let { offsetX, offsetY } = e.nativeEvent;
@@ -57,6 +62,7 @@ const Canvas = ({
           offsetX,
           offsetY,
           stroke: color,
+          strokeWidth: strokeWidth,
           path: [[offsetX, offsetY]],
         },
       ]);
@@ -70,6 +76,7 @@ const Canvas = ({
           x1: offsetX,
           y1: offsetY,
           stroke: color,
+          strokeWidth: strokeWidth,
         },
       ]);
     }
@@ -164,7 +171,7 @@ const Canvas = ({
           roughCanvas.linearPath(elem?.path, {
             stroke: elem.stroke,
             roughness: 0,
-            strokeWidth: 2,
+            strokeWidth: elem.strokeWidth,
           });
         }
         //for line
@@ -173,7 +180,7 @@ const Canvas = ({
             generator.line(elem.x1, elem.y1, elem.width, elem.height, {
               stroke: elem.stroke,
               roughness: 0,
-              strokeWidth: 3,
+              strokeWidth: elem.strokeWidth,
             })
           );
         }
@@ -183,7 +190,7 @@ const Canvas = ({
             generator.rectangle(elem.x1, elem.y1, elem.width, elem.height, {
               stroke: elem.stroke,
               roughness: 0,
-              strokeWidth: 3,
+              strokeWidth: elem.strokeWidth,
             })
           );
         }

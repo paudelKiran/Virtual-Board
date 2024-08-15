@@ -16,22 +16,24 @@ import { UserType } from "@/types/declaration";
 // Define the context type
 type MyContextType = {
   user: UserType[];
+  setUser: Dispatch<React.SetStateAction<UserType[]>>;
   isJoined: boolean;
+  setIsJoined: Dispatch<SetStateAction<boolean>>;
   uuidv4: () => string;
   socket: any;
   roomUsers: any;
+  setRoomUsers: Dispatch<React.SetStateAction<UserType[]>>;
+  strokeWidth: number;
+  setStrokeWidth: Dispatch<SetStateAction<number>>;
   noUsers: number;
   setNoUsers: Dispatch<SetStateAction<number>>;
-  setIsJoined: Dispatch<SetStateAction<boolean>>;
-  setUser: Dispatch<React.SetStateAction<UserType[]>>;
-  setRoomUsers: Dispatch<React.SetStateAction<UserType[]>>;
   canvasRef: any;
   ctx: any;
   tool: string;
-  color: string;
-  element: Array<any>;
   setTool: Dispatch<SetStateAction<string>>;
+  color: string;
   setColor: Dispatch<SetStateAction<string>>;
+  element: Array<any>;
   setElement: Dispatch<SetStateAction<Array<any>>>;
 };
 
@@ -43,6 +45,8 @@ const BoardContext = createContext<MyContextType>({
   socket,
   roomUsers: [],
   noUsers: 0,
+  strokeWidth: 1,
+  setStrokeWidth: () => {},
   setNoUsers: () => {},
   setRoomUsers: () => {},
   setIsJoined: () => {},
@@ -62,11 +66,12 @@ export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserType[]>([]);
   const [roomUsers, setRoomUsers] = useState<any>([]);
   const [noUsers, setNoUsers] = useState(0);
+  const [strokeWidth, setStrokeWidth] = useState(1);
   //canvas related
   let canvasRef = useRef<HTMLCanvasElement>(null);
   let ctx = useRef(null);
   const [tool, setTool] = useState("pencil");
-  const [color, setColor] = useState("black");
+  const [color, setColor] = useState("#000000");
   const [element, setElement] = useState<any>([]);
 
   return (
@@ -90,6 +95,8 @@ export const BoardProvider = ({ children }: { children: React.ReactNode }) => {
         setColor,
         element,
         setElement,
+        strokeWidth,
+        setStrokeWidth,
       }}
     >
       {children}

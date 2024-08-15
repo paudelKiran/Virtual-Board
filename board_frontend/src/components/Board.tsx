@@ -3,7 +3,7 @@ import React from "react";
 import { useRef, useState, useEffect } from "react";
 import Canvas from "./Canvas";
 import { MenuBar } from "./MenuBar";
-import { UserType } from "@/types/declaration";
+import { useRouter } from "next/navigation";
 import { useBoardContext } from "@/context/myContext";
 
 const Board = () => {
@@ -17,6 +17,7 @@ const Board = () => {
     setTool,
     element,
     setElement,
+    strokeWidth,
   } = useBoardContext();
   let imgRef = useRef<HTMLImageElement>(null);
 
@@ -30,6 +31,7 @@ const Board = () => {
       }
     });
   }, []);
+
   useEffect(() => {
     const canvasImg = canvasRef.current?.toDataURL();
     socket.emit("boardData", canvasImg);
@@ -50,6 +52,7 @@ const Board = () => {
               tool={tool}
               color={color}
               element={element}
+              strokeWidth={strokeWidth}
             />
           ) : (
             <div className="h-[77vh] w-[82vw] border-primary border-4 rounded-md m-2 mb-10 overflow-hidden">

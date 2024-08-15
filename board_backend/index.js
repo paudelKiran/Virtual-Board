@@ -53,6 +53,11 @@ io.on("connection", (socket) => {
       const roomUsers = userJoin(data);
       socket.join(roomId);
 
+      socket.broadcast.to(roomId).emit("userJoined", {
+        success: true,
+        message: `${data.userName} joined the the room.`,
+      });
+
       io.to(roomId).emit("allUsers", roomUsers);
       callback({
         success: true,
@@ -69,18 +74,19 @@ io.on("connection", (socket) => {
   //? data sent from whiteboard
   socket.on("boardData", (data) => {
     imageGlobal = data;
-    socket.broadcast.to(findUser(socket.id).roomId).emit("boardResponse", {
-      imageUrl: imageGlobal,
-    });
+    const user = findUser(socket.id);
+    // console.log(user);
+    user &&
+      socket.broadcast.to(user.roomId).emit("boardResponse", {
+        imageUrl: imageGlobal,
+      });
   });
 
   //for disconnection
   socket.on("disconnect", () => {
     const userLeft = userLeave(socket.id);
-    console.log(userLeft);
 
     if (userLeft) {
-      console.log(userLeft);
       const usersInRoom = getUsersInRoom(userLeft.roomId);
       socket.broadcast.to(userLeft.roomId).emit("userLeft", {
         message: `${userLeft.userName} left the room.`,

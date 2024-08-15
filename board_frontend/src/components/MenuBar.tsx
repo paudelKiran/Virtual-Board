@@ -11,9 +11,11 @@ import { Separator } from "./ui/separator";
 import SvgImage from "./SvgImage";
 import { useState } from "react";
 import { useBoardContext } from "@/context/myContext";
+import { Slider } from "@/components/ui/slider";
 
 export function MenuBar() {
-  const { color, setColor, tool, setTool } = useBoardContext();
+  const { color, setColor, tool, setTool, strokeWidth, setStrokeWidth } =
+    useBoardContext();
   const [active, setActive] = useState("pencil");
 
   const handleSvgClick = (e: any, id: string) => {
@@ -64,6 +66,20 @@ export function MenuBar() {
             }}
           />
         </MenubarTrigger>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger className="h-8 w-8 p-0.5 m-3">S</MenubarTrigger>
+        <MenubarContent side="right" className=" h-10 menuContent">
+          <Slider
+            name="stroke"
+            defaultValue={[strokeWidth]}
+            max={5}
+            step={1}
+            onValueCommit={(e) => {
+              setStrokeWidth(e[0]);
+            }}
+          />
+        </MenubarContent>
       </MenubarMenu>
     </Menubar>
   );
