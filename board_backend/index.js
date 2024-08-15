@@ -8,6 +8,7 @@ const {
   userJoin,
   userLeave,
   getUsersInRoom,
+  findUser,
 } = require("./utils/user");
 const app = express();
 const server = createServer(app);
@@ -23,7 +24,6 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  // console.log("Ommm chin tabak dam dam");
   let imageGlobal, roomIdGlobal;
 
   //? data requested from create room
@@ -69,7 +69,7 @@ io.on("connection", (socket) => {
   //? data sent from whiteboard
   socket.on("boardData", (data) => {
     imageGlobal = data;
-    socket.broadcast.to(roomIdGlobal).emit("boardResponse", {
+    socket.broadcast.to(findUser(socket.id).roomId).emit("boardResponse", {
       imageUrl: imageGlobal,
     });
   });

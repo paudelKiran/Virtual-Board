@@ -15,7 +15,6 @@ import { useBoardContext } from "@/context/myContext";
 
 const DrawerComp = () => {
   const { user, roomUsers, noUsers } = useBoardContext();
-  console.log(user);
   return (
     <>
       <Drawer>

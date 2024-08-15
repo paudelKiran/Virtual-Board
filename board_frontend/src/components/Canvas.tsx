@@ -24,15 +24,26 @@ const Canvas = ({
       return;
     }
     // h-[75vh] w-[80vw]
-    canvas.height = (window.innerHeight * 3) / 4; //75vh
-    canvas.width = (window.innerWidth * 4) / 5; //80vw
-    const context = canvas?.getContext("2d");
-    ctx.current = context;
+    //Setting the canvas site and width to be responsive
+    var sizeWidth = (81 * window.innerWidth) / 100,
+      sizeHeight = (75 * window.innerHeight) / 100;
 
-    ctx.lineWidth = 2;
+    canvas.width = sizeWidth;
+    canvas.height = sizeHeight;
+    const context = canvas?.getContext("2d");
+
+    // context.scale(2, 2);
+    ctx.current = context;
     ctx.lineCap = "round";
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 5;
+
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
   }, []);
+
+  useEffect(() => {
+    ctx.current.strokeStyle = color;
+  }, [color]);
 
   const handleMouseDown = (e: any) => {
     let { offsetX, offsetY } = e.nativeEvent;
@@ -150,7 +161,11 @@ const Canvas = ({
       element.forEach((elem: any) => {
         //for pencil
         if (elem.tool === "pencil") {
-          roughCanvas.linearPath(elem?.path);
+          roughCanvas.linearPath(elem?.path, {
+            stroke: elem.stroke,
+            roughness: 0,
+            strokeWidth: 2,
+          });
         }
         //for line
         else if (elem.tool === "line") {
@@ -158,7 +173,7 @@ const Canvas = ({
             generator.line(elem.x1, elem.y1, elem.width, elem.height, {
               stroke: elem.stroke,
               roughness: 0,
-              strokeWidth: 5,
+              strokeWidth: 3,
             })
           );
         }
@@ -168,7 +183,7 @@ const Canvas = ({
             generator.rectangle(elem.x1, elem.y1, elem.width, elem.height, {
               stroke: elem.stroke,
               roughness: 0,
-              strokeWidth: 5,
+              strokeWidth: 3,
             })
           );
         }
@@ -187,7 +202,9 @@ const Canvas = ({
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        <canvas ref={canvasRef} />
+        <div className="flex justify-center pt-0.5 h-[75vh] w-[82vw]">
+          <canvas ref={canvasRef} />
+        </div>
       </div>
     </>
   );

@@ -10,15 +10,12 @@ import {
 import { Separator } from "./ui/separator";
 import SvgImage from "./SvgImage";
 import { useState } from "react";
+import { useBoardContext } from "@/context/myContext";
 
-export function MenuBar({
-  tool,
-  setTool,
-}: {
-  tool: String;
-  setTool: Function;
-}) {
+export function MenuBar() {
+  const { color, setColor, tool, setTool } = useBoardContext();
   const [active, setActive] = useState("pencil");
+
   const handleSvgClick = (e: any, id: string) => {
     setTool(id);
     setActive(id);
@@ -56,6 +53,17 @@ export function MenuBar({
             <SvgImage fileName="rectangle" click={handleSvgClick} />
           </MenubarItem>
         </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger className="h-8 w-8 p-0.5 m-3">
+          <input
+            type="color"
+            value={color}
+            onChange={(e) => {
+              setColor(e.target.value);
+            }}
+          />
+        </MenubarTrigger>
       </MenubarMenu>
     </Menubar>
   );

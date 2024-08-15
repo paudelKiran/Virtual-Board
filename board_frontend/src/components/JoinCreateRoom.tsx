@@ -80,15 +80,15 @@ export function JoinCreateRoom() {
   };
 
   return (
-    <div className="w-full h-[70vh] flex flex-row justify-evenly mt-5 text-col3 font-normal">
+    <div className="w-full h-[75vh] flex flex-row justify-evenly mt-5 text-col3 font-normal">
       {/* create room form */}
       <div className=" w-2/5 h-full justify-center flex items-center">
         <form
-          className="bg-col4 shadow-md rounded px-8 pt-6 pb-8 h-full w-full"
+          className="bg-col4 shadow-md rounded px-8 pt-6 pb-8 h-full w-full space-y-2 md:space-y-5 "
           onSubmit={(e) => handleCreateRoom(e)}
         >
           <h1 className="text-5xl font-bold mb-5">Create Room</h1>
-          <div className="mb-4">
+          <div>
             <label className="block text-col3 text-sm font-bold mb-2">
               Join as
             </label>
@@ -101,7 +101,7 @@ export function JoinCreateRoom() {
               minLength={3}
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label className="block text-sm font-bold mb-2">
               Meeting Title
             </label>
@@ -114,7 +114,7 @@ export function JoinCreateRoom() {
               minLength={3}
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label className="block text-sm font-bold mb-2">Meeting ID</label>
             <div className="flex space-x-1">
               <input
@@ -141,11 +141,11 @@ export function JoinCreateRoom() {
       {/* join room form  */}
       <div className=" w-2/5 h-full justify-center flex items-center text-col3">
         <form
-          className="bg-col4 shadow-inner rounded px-8 pt-6 pb-8 h-full w-full"
+          className="bg-col4 shadow-inner rounded px-8 pt-6 pb-8 h-full w-full space-y-2 md:space-y-5"
           onSubmit={handleJoinRoom}
         >
-          <h1 className="text-5xl font-bold mb-5">Join Room</h1>
-          <div className="mb-4">
+          <h1 className="text-5xl font-bold">Join Room</h1>
+          <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Join as
             </label>
@@ -158,7 +158,7 @@ export function JoinCreateRoom() {
               minLength={3}
             />
           </div>
-          <div className="mb-6">
+          <div>
             <label className="block text-gray-700 text-sm font-bold mb-2">
               Meeting ID
             </label>

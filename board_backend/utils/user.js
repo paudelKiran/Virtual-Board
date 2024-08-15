@@ -32,6 +32,11 @@ const userLeave = (socketId) => {
   }
 };
 
+const findUser = (socketId) => {
+  const foundUser = users.find((user) => (user.socketId = socketId));
+  return foundUser;
+};
+
 const getUsersInRoom = (roomId) => {
   const roomUsers = [];
   users.map((user) => {
@@ -49,4 +54,5 @@ module.exports = {
   userJoin,
   userLeave,
   getUsersInRoom,
+  findUser,
 };
