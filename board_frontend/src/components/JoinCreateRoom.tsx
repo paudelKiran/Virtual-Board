@@ -66,12 +66,13 @@ export function JoinCreateRoom() {
       userId: uuidv4(),
       userName: usernameVal,
       host: false,
-      presenter: false,
+      presenter: true,
     };
+    setRoomId(userDet.roomId);
     setUser([userDet]);
     socket.emit("joinRoomData", userDet, function (response: any) {
       if (response.success) {
-        router.push(`/meeting/${roomId}`);
+        router.push(`/meeting/${meetingIdVal}`);
         toast.success(response.message);
       } else {
         toast.error(response.message);

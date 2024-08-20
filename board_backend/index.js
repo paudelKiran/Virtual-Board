@@ -9,6 +9,7 @@ const {
   userLeave,
   getUsersInRoom,
   findUser,
+  arraysEqual,
 } = require("./utils/user");
 const app = express();
 const server = createServer(app);
@@ -24,16 +25,25 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  let imageGlobal, roomIdGlobal;
+  let imgGlobal, roomIdGlobal;
+
+  // socket.on("client-ready", () => {
+  //   const user = findUser(socket.id);
+  //   if (user) {
+  //     console.log("getting ready", user.roomId);
+
+  //     socket.broadcast.to(user.roomId).emit("getState", { success: true });
+  //   }
+  // });
 
   //? data requested from create room
   socket.on("createRoomData", (data, callback) => {
-    const { roomId, userName } = data;
-    roomIdGlobal = roomId;
+    const { roomId } = data;
     data.socketId = socket.id;
     const roomUsers = userJoin(data);
     createRoom(roomId);
     socket.join(roomId);
+    // console.log(roomId, "create");
 
     if (roomUsers) {
       callback({ success: true, message: `Meeting has been created.` });
@@ -47,11 +57,13 @@ io.on("connection", (socket) => {
   socket.on("joinRoomData", (data, callback) => {
     const { roomId } = data;
     data.socketId = socket.id;
+    // console.log(roomId, "join");
+    // data.presenter = true;
     const doRoomExist = findRoom(roomId);
     //doRoomExist gets room id if exits else undefined
     if (doRoomExist) {
+      socket.join(data.roomId);
       const roomUsers = userJoin(data);
-      socket.join(roomId);
 
       socket.broadcast.to(roomId).emit("userJoined", {
         success: true,
@@ -72,14 +84,16 @@ io.on("connection", (socket) => {
   });
 
   //? data sent from whiteboard
+
   socket.on("boardData", (data) => {
-    imageGlobal = data;
     const user = findUser(socket.id);
-    // console.log(user);
-    user &&
-      socket.broadcast.to(user.roomId).emit("boardResponse", {
-        imageUrl: imageGlobal,
+    imgGlobal = data;
+    console.log(user);
+    if (user) {
+      io.to(user.roomId).emit("boardResponse", {
+        imgUrl: data,
       });
+    }
   });
 
   //for disconnection

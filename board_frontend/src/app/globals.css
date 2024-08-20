@@ -23,6 +23,10 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 input[type="color"]::-webkit-color-swatch {
   border: none;
 }
+/* 
+#canvas{
+  background-image: url("/time.jpg")
+} */
 
 @layer base {
   * {

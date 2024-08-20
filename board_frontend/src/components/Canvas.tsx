@@ -13,6 +13,7 @@ const Canvas = ({
   element,
   setElement,
   strokeWidth,
+  canvasDivRef,
 }: dataToCanvas) => {
   const generator = rough.generator();
   const [isDrawing, setIsDrawing] = useState(false);
@@ -32,7 +33,6 @@ const Canvas = ({
     canvas.width = sizeWidth;
     canvas.height = sizeHeight;
     const context = canvas?.getContext("2d");
-
     // context.scale(2, 2);
     ctx.current = context;
     ctx.lineCap = "round";
@@ -86,62 +86,70 @@ const Canvas = ({
     if (!isDrawing) {
       return;
     }
-    let { offsetX, offsetY } = e.nativeEvent;
-    //for pencil
-    if (tool === "pencil") {
-      const { path } = element[element.length - 1];
-      const newPath = [...path, [offsetX, offsetY]]; //continuously updating the path
+    // console.log(element, " test ");
+    if (
+      Array.isArray(element) &&
+      element.length > 0 &&
+      element[element.length - 1]?.path
+    ) {
+      let { offsetX, offsetY } = e.nativeEvent;
+      //for pencil
+      if (tool === "pencil") {
+        const { path = "defaultPath" } = element[element.length - 1] || {};
 
-      setElement((prevElement: any) =>
-        prevElement.map((elem: any, index: number) => {
-          if (index === element.length - 1) {
-            return {
-              ...elem,
-              path: newPath,
-            };
-          } else {
-            return {
-              ...elem,
-            };
-          }
-        })
-      );
-    }
-    //for rectangle
-    else if (tool === "rectangle") {
-      setElement((prevElement: any) =>
-        prevElement.map((elem: any, index: number) => {
-          if (index === element.length - 1) {
-            return {
-              ...elem,
-              width: offsetX - elem.x1,
-              height: offsetY - elem.y1,
-            };
-          } else {
-            return {
-              ...elem,
-            };
-          }
-        })
-      );
-    }
-    //for the line
-    else if (tool === "line") {
-      setElement((prevElement: any) =>
-        prevElement.map((elem: any, index: number) => {
-          if (index === element.length - 1) {
-            return {
-              ...elem,
-              width: offsetX,
-              height: offsetY,
-            };
-          } else {
-            return {
-              ...elem,
-            };
-          }
-        })
-      );
+        const newPath = [...path, [offsetX, offsetY]]; //continuously updating the path
+
+        setElement((prevElement: any) =>
+          prevElement.map((elem: any, index: number) => {
+            if (index === element.length - 1) {
+              return {
+                ...elem,
+                path: newPath,
+              };
+            } else {
+              return {
+                ...elem,
+              };
+            }
+          })
+        );
+      }
+      //for rectangle
+      else if (tool === "rectangle") {
+        setElement((prevElement: any) =>
+          prevElement.map((elem: any, index: number) => {
+            if (index === element.length - 1) {
+              return {
+                ...elem,
+                width: offsetX - elem.x1,
+                height: offsetY - elem.y1,
+              };
+            } else {
+              return {
+                ...elem,
+              };
+            }
+          })
+        );
+      }
+      //for the line
+      else if (tool === "line") {
+        setElement((prevElement: any) =>
+          prevElement.map((elem: any, index: number) => {
+            if (index === element.length - 1) {
+              return {
+                ...elem,
+                width: offsetX,
+                height: offsetY,
+              };
+            } else {
+              return {
+                ...elem,
+              };
+            }
+          })
+        );
+      }
     }
   };
 
@@ -154,6 +162,7 @@ const Canvas = ({
 
   // };
 
+  //?writing into canvas
   useLayoutEffect(() => {
     if (canvasRef.current) {
       let roughCanvas = rough.canvas(canvasRef.current);
@@ -165,6 +174,7 @@ const Canvas = ({
           canvasRef.current.height
         );
       }
+
       element.forEach((elem: any) => {
         //for pencil
         if (elem.tool === "pencil") {
@@ -194,6 +204,14 @@ const Canvas = ({
             })
           );
         }
+        //for image
+        else if (elem.tool === "image") {
+          const img = new Image();
+          img.src = elem.src;
+          img.onload = () => {
+            ctx.current.drawImage(img, 0, 0);
+          };
+        }
       });
     } else {
       console.log("unable to load canvas");
@@ -209,8 +227,11 @@ const Canvas = ({
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        <div className="flex justify-center pt-0.5 h-[75vh] w-[82vw]">
-          <canvas ref={canvasRef} />
+        <div
+          className="flex justify-center pt-0.5 h-[75vh] w-[81vw]"
+          ref={canvasDivRef}
+        >
+          <canvas ref={canvasRef} id="canvas" />
         </div>
       </div>
     </>

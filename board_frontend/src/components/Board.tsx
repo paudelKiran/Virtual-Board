@@ -19,22 +19,38 @@ const Board = () => {
     setElement,
     strokeWidth,
   } = useBoardContext();
-  let imgRef = useRef<HTMLImageElement>(null);
+
+  // let imgRef = useRef<HTMLImageElement>(null);
+  let canvasDivRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.on("boardResponse", (data: any) => {
-      // console.log(data);
-      if (imgRef.current) {
-        if (data.imageUrl) {
-          imgRef.current.src = data.imageUrl;
-        }
-      }
-    });
+    // Listening for data from the backend
+    const handleBoardResponse = (data: any) => {
+      console.log("data fetched:", data);
+      const img = new Image();
+      img.src = data.imgUrl;
+      img.onload = () => {
+        ctx?.current.drawImage(img, 0, 0);
+      };
+    };
+    socket.on("boardResponse", handleBoardResponse);
+
+    return () => {
+      socket.off("boardResponse");
+    };
   }, []);
 
   useEffect(() => {
-    const canvasImg = canvasRef.current?.toDataURL();
-    socket.emit("boardData", canvasImg);
+    // socket.on("getState", () => {
+    if (!canvasRef.current?.toDataURL()) return;
+    console.log("sending canvas state");
+    socket.emit("boardData", canvasRef?.current.toDataURL());
+    // });
+
+    return () => {
+      // socket.off("getState");
+      socket.off("boardData");
+    };
   }, [element]);
 
   return (
@@ -44,17 +60,17 @@ const Board = () => {
           <MenuBar />
         </div>
         <div className="h-[77vh] w-[82vw]">
-          {user[0].presenter ? (
-            <Canvas
-              canvasRef={canvasRef}
-              ctx={ctx}
-              setElement={setElement}
-              tool={tool}
-              color={color}
-              element={element}
-              strokeWidth={strokeWidth}
-            />
-          ) : (
+          <Canvas
+            canvasRef={canvasRef}
+            ctx={ctx}
+            setElement={setElement}
+            tool={tool}
+            color={color}
+            element={element}
+            strokeWidth={strokeWidth}
+            canvasDivRef={canvasDivRef}
+          />
+          {/* ) : (
             <div className="h-[77vh] w-[82vw] border-primary border-4 rounded-md m-2 mb-10 overflow-hidden">
               <img
                 className="w-75vw h-80vh overflow-hidden"
@@ -63,7 +79,7 @@ const Board = () => {
                 src="/time.jpg"
               />
             </div>
-          )}
+          )} */}
         </div>
       </section>
     </>

@@ -47,6 +47,10 @@ const getUsersInRoom = (roomId) => {
   return roomUsers;
 };
 
+const arraysEqual = (a, b) => {
+  return a === b;
+};
+
 module.exports = {
   findRoom,
   createRoom,
@@ -55,4 +59,5 @@ module.exports = {
   userLeave,
   getUsersInRoom,
   findUser,
+  arraysEqual,
 };

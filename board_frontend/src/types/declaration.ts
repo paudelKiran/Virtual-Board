@@ -7,7 +7,8 @@ export type dataToCanvas={
     tool:string;
     element: any;
     setElement:Function;
-    strokeWidth:number
+    strokeWidth:number;
+    canvasDivRef:RefObject<HTMLDivElement>;
 }
 
 export type UserType = {

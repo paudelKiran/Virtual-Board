@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/drawer";
 import SvgImage from "./SvgImage";
 import { useBoardContext } from "@/context/myContext";
+import { Key } from "lucide-react";
 
 const DrawerComp = () => {
   const { user, roomUsers, noUsers } = useBoardContext();
@@ -34,21 +35,19 @@ const DrawerComp = () => {
           </DrawerHeader>
           <DrawerDescription className="m-1 space-y-1">
             {roomUsers?.map((roomUser: any) => (
-              <>
-                <div
-                  key={roomUser.userName}
-                  className="bg-col4 hover:bg-hoverCol flex text-col3 px-2 pl-4 text-lg rounded-[4px] font-medium items-center justify-between"
-                >
-                  <p>
-                    {roomUser.userName}&nbsp;
-                    <span className="text-col3">
-                      {`${roomUser.userId === user[0].userId ? " (You) " : ""}`}
-                      {`${roomUser.host === true ? " (Host) " : ""}`}
-                    </span>
-                  </p>
-                  <SvgImage fileName="threeDot" extraClass="p-2 px-[9px]" />
-                </div>
-              </>
+              <div
+                key={roomUser.userName}
+                className="bg-col4 hover:bg-hoverCol flex text-col3 px-2 pl-4 text-lg rounded-[4px] font-medium items-center justify-between"
+              >
+                <p>
+                  {roomUser.userName}&nbsp;
+                  <span className="text-col3">
+                    {`${roomUser.userId === user[0].userId ? " (You) " : ""}`}
+                    {`${roomUser.host === true ? " (Host) " : ""}`}
+                  </span>
+                </p>
+                <SvgImage fileName="threeDot" extraClass="p-2 px-[9px]" />
+              </div>
             ))}
           </DrawerDescription>
           <DrawerFooter className="justify-center">
