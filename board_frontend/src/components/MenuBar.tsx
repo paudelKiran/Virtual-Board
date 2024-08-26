@@ -68,13 +68,27 @@ export function MenuBar() {
         </MenubarTrigger>
       </MenubarMenu>
       <MenubarMenu>
-        <MenubarTrigger className="h-8 w-8 p-0.5 m-3">S</MenubarTrigger>
+        <MenubarTrigger className="h-8 w-8 p-0.5 m-3">
+          <svg height="32" width="32" xmlns="http://www.w3.org/2000/svg">
+            <line
+              x1="0"
+              y1="16"
+              x2="32"
+              y2="16"
+              strokeWidth={strokeWidth}
+              stroke={color}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </MenubarTrigger>
         <MenubarContent side="right" className=" h-10 menuContent">
           <Slider
             name="stroke"
             defaultValue={[strokeWidth]}
             max={5}
             step={1}
+            min={1}
             onValueCommit={(e) => {
               setStrokeWidth(e[0]);
             }}

@@ -14,6 +14,9 @@ import { UserType } from "@/types/declaration";
 // Define the structure for the user object
 
 // Define the context type
+
+type Tool = "pencil" | "line" | "rectangle";
+
 type MyContextType = {
   user: UserType[];
   setUser: Dispatch<React.SetStateAction<UserType[]>>;
@@ -29,7 +32,7 @@ type MyContextType = {
   setNoUsers: Dispatch<SetStateAction<number>>;
   canvasRef: any;
   ctx: any;
-  tool: string;
+  tool: Tool;
   setTool: Dispatch<SetStateAction<string>>;
   color: string;
   setColor: Dispatch<SetStateAction<string>>;

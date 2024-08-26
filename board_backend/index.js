@@ -25,7 +25,8 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  let imgGlobal, roomIdGlobal;
+  let imgGlobal = [],
+    roomIdGlobal;
 
   // socket.on("client-ready", () => {
   //   const user = findUser(socket.id);
@@ -87,10 +88,9 @@ io.on("connection", (socket) => {
 
   socket.on("boardData", (data) => {
     const user = findUser(socket.id);
-    imgGlobal = data;
-    console.log(user);
+    // imgGlobal = data;
     if (user) {
-      io.to(user.roomId).emit("boardResponse", {
+      socket.broadcast.to(user.roomId).emit("boardResponse", {
         imgUrl: data,
       });
     }
